@@ -12,7 +12,7 @@ st.set_page_config(page_title="Constitution of Pakistan · Law_bot", page_icon="
 
 MAX_QUESTIONS_PER_SESSION = 15
 DAILY_LIMIT = int(os.getenv("DAILY_QUESTION_LIMIT", "150"))
-REPO_URL = "https://github.com/YOUR-USER/Law_bot"          # change me
+REPO_URL = "https://github.com/ZimranSohail/Law_bot"
 MAX_SRC_CHARS = 3000
 
 EXAMPLE_GROUPS = {
@@ -202,7 +202,7 @@ with st.sidebar:
     if st.button("Clear conversation", use_container_width=True):
         st.session_state.history = []
         st.rerun()
-    st.markdown(f"[Source code on GitHub]({https://github.com/ZimranSohail/Law_bot})")
+    st.markdown(f"[Source code on GitHub]({REPO_URL})")
 
 landing = st.empty()
 if not st.session_state.history:
