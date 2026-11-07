@@ -115,25 +115,30 @@ class FusionRAG(RewriteStrictRAG):
     name = "fusion"
     rrf_k = 60
 
+    def limits(self, question):
+        return self.n_results, self.max_groups
+
     def retrieve(self, question, detected, query_text=None):
         if query_text is None:
             query_text = self.prepare_query(question)
+        n, mg = self.limits(question)
         exact, missing = exact_lookup(self.store, detected)
         skip = set(exact)
 
         lists = []
         if not is_roman_urdu(question):
-            lists.append(semantic_search(self.store, question, self.n_results, skip))
+            lists.append(semantic_search(self.store, question, n, skip))
         if query_text != question or is_roman_urdu(question):
-            lists.append(semantic_search(self.store, query_text, self.n_results, skip))
+            lists.append(semantic_search(self.store, query_text, n, skip))
 
         scores, by_key = {}, {}
         for lst in lists:
             for rank, g in enumerate(lst, 1):
                 scores[g.key] = scores.get(g.key, 0.0) + 1.0 / (self.rrf_k + rank)
-                by_key.setdefault(g.key, g)          # keep the first list's group object
+                by_key.setdefault(g.key, g)
         fused = sorted(by_key.values(), key=lambda g: -scores[g.key])
-        return list(exact.values()) + fused[: self.max_groups], missing
+        return list(exact.values()) + fused[:mg], missing
+
 
 
 FOOTNOTE_NUM = re.compile(r"^\s*\d+\.\s*")
@@ -314,6 +319,22 @@ class ScopeGateRAG(FusionRAG):
             return DECLINE_TEXT, {"scope": "out"}
         return super().generate(question, context)
 
+BROAD_RE = re.compile(
+    r"\brights?\s+of\b|\btell me about\b|\bwhat does the constitution say about\b"
+    r"|\boverview\b|\bsummar(?:y|ise|ize)\b", re.I)
+
+
+class BroadRAG(InsertionNotesV2RAG):
+    """Wider retrieval for broad 'rights of X' / 'tell me about X' questions that name no article."""
+    name = "broad"
+    broad_n, broad_groups = 24, 12
+
+    def limits(self, question):
+        if BROAD_RE.search(question) and not self.detect(question):
+            return self.broad_n, self.broad_groups
+        return self.n_results, self.max_groups
+
+
 COMPLETE_RULE = """
 - When an article states exceptions, provisos, time limits, conditions or separate clauses that bear on the question, include each of them briefly, even if one clause already answers the main point. Do not add anything that is not in the sources."""
 
@@ -321,3 +342,7 @@ class CompleteRAG(FusionRAG):
     """Fusion + a rule asking for exceptions, provisos and time limits."""
     name = "fusion_complete"
     system_prompt = FusionRAG.system_prompt + COMPLETE_RULE
+
+
+
+

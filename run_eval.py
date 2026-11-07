@@ -9,7 +9,7 @@ from pathlib import Path
 from config import settings
 from evaluation import load_eval, score_retrieval, score_answers
 from variants import (RewriteStrictRAG, RouterRAG, FusionRAG, InsertionNotesV2RAG,
-                      ScopeGateRAG, CompleteRAG)
+                      ScopeGateRAG, CompleteRAG, BroadRAG)
 from base_rag import BaseRAG
 
 SYSTEMS = {
@@ -20,6 +20,7 @@ SYSTEMS = {
     "fusion_insertion_v2": InsertionNotesV2RAG,
     "fusion_scope": ScopeGateRAG,
     "fusion_complete": CompleteRAG,
+    "broad": BroadRAG,
 }
 
 

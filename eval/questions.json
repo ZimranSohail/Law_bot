@@ -591,5 +591,89 @@
       "Yes, with the consent of the Federal Government",
       "The Provincial Government must get the functions ratified by the Provincial Assembly within sixty days"
     ]
+  },
+  {
+    "id": "q50",
+    "question": "What are the rights of children?",
+    "expected_articles": [
+      "25A",
+      "11"
+    ],
+    "category": "broad",
+    "should_decline": false,
+    "verified": false,
+    "split": "heldout5"
+  },
+  {
+    "id": "q51",
+    "question": "What does the Constitution say about education?",
+    "expected_articles": [
+      "25A",
+      "37"
+    ],
+    "category": "broad",
+    "should_decline": false,
+    "verified": false,
+    "split": "heldout5"
+  },
+  {
+    "id": "q52",
+    "question": "What are the rights of an accused person?",
+    "expected_articles": [
+      "10",
+      "10A",
+      "13"
+    ],
+    "category": "broad",
+    "should_decline": false,
+    "verified": false,
+    "split": "heldout5"
+  },
+  {
+    "id": "q53",
+    "question": "Tell me about freedom of expression and assembly",
+    "expected_articles": [
+      "19",
+      "16"
+    ],
+    "category": "broad",
+    "should_decline": false,
+    "verified": false,
+    "split": "heldout5"
+  },
+  {
+    "id": "q54",
+    "question": "What does the Constitution say about religious freedom?",
+    "expected_articles": [
+      "20"
+    ],
+    "category": "broad",
+    "should_decline": false,
+    "verified": false,
+    "split": "heldout5"
+  },
+  {
+    "id": "q55",
+    "question": "what are the rights of minorities in pakistan",
+    "expected_articles": [
+      "36",
+      "20"
+    ],
+    "category": "broad",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q56",
+    "question": "tell me about the right of women",
+    "expected_articles": [
+      "25",
+      "34"
+    ],
+    "category": "broad",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
   }
 ]
