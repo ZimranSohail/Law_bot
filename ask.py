@@ -3,12 +3,16 @@ import sys
 
 from variants import InsertionNotesV2RAG, ScopeGateRAG, FusionRAG
 from base_rag import BaseRAG
+from pathlib import Path
+
+def with_private_cache(cls):
+    return type(cls.__name__, (cls,), {"cache_path": Path("logs/ask_rewrite_cache.json")})
 
 SYSTEMS = {
     "base": BaseRAG,
-    "fusion": FusionRAG,
-    "default": InsertionNotesV2RAG,
-    "scope": ScopeGateRAG,
+    "fusion": with_private_cache(FusionRAG),
+    "default": with_private_cache(InsertionNotesV2RAG),
+    "scope": with_private_cache(ScopeGateRAG),
 }
 
 
