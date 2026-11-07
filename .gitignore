@@ -6,3 +6,5 @@ __pycache__/
 chroma_db*/
 logs/
 eval/archive/
+chroma_db_old/
+chroma_db_v2/
