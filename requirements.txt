@@ -1,6 +1,7 @@
-pymupdf>=1.24
-ipykernel
-chromadb
-sentence-transformers
-openai 
-python-dotenv
+--extra-index-url https://download.pytorch.org/whl/cpu
+pymupdf==2.0
+chromadb==1.5.9
+sentence-transformers==6.2.0
+openai==3.36.1
+python-dotenv==1.2.4
+streamlit==1.67.0
