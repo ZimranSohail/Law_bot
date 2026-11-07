@@ -100,7 +100,7 @@ MARK_SVG = ('<svg viewBox="0 0 64 64" aria-hidden="true"><defs><mask id="lbm">'
 
 HERO = ('<div class="lb-hero"><div class="lb-mark">%SVG%</div>'
         '<p class="lb-urdu">آئینِ پاکستان</p>'
-        '<p class="lb-sub">You have rights. Ask where they are written.</p>'
+        '<p class="lb-sub">Did you know that you have rights? The Constitution says you do.</p>'
         '<div class="lb-title">Constitution of Pakistan</div>'
         '<p class="lb-sub">Ask a question. Get an answer cited from the text.</p>'
         '<span class="lb-pill">Unofficial study tool · not legal advice</span>'
