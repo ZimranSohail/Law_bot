@@ -31,7 +31,12 @@ class ExtractorConfig:
 class MarginNote:
     y0: float
     text: str
-
+@dataclass
+class Marker:
+    number: str
+    before: str
+    after: str
+    prev: str = ""   # tail of the previous body row (for markers on empty or '*' rows)# visible text on the same row, after the marker (begins inside the [ ... ] span)
 
 @dataclass
 class PageContent:
@@ -40,7 +45,7 @@ class PageContent:
     body: str
     margin_notes: list[MarginNote] = field(default_factory=list)
     footnotes: list[tuple[str, str]] = field(default_factory=list)
-
+    markers: list[Marker] = field(default_factory=list)
 
 _SEPARATOR_CHARS = set("–—-_ ")
 _PAGE_TOKEN = re.compile(r"\d{1,3}|[ivxlc]{1,6}", re.I)
@@ -83,6 +88,8 @@ class PDFExtractor:
         printed_page = None
         rows = []             # (baseline_y, x0, text)
         margin_spans = []     # (side, baseline, text), one per visual margin line
+        markers = []
+        last_row = ""
         footnote_lines = []   # each line = [(font_size, text), ...]
 
         for b in blocks:
@@ -121,10 +128,24 @@ class PDFExtractor:
                 if sep_y is not None and ln["bbox"][1] >= sep_y:
                     footnote_lines.append([(s_["size"], s_["text"]) for s_ in body_sp])
                 else:
+                    # record footnote markers on this row (text is NOT changed)
+                    seen, pend = "", []
+                    for s_ in body_sp:
+                        t = s_["text"]
+                        if s_["size"] <= c.marker_font_max:
+                            mnum = re.fullmatch(r"\s*(\d{1,2})\s*", t)
+                            if mnum:
+                                pend.append([mnum.group(1), seen, ""])
+                        else:
+                            seen += t
+                            for rec in pend:
+                                rec[2] += t
+                    markers.extend(Marker(n, b, a, last_row[-60:]) for n, b, a in pend)
                     txt = "".join(s_["text"] for s_ in body_sp if s_["size"] > c.marker_font_max)
                     if txt.strip():
                         base = max(body_sp, key=lambda q: q["size"])["origin"][1]
                         rows.append((base, body_sp[0]["bbox"][0], txt.rstrip()))
+                        last_row = txt.rstrip()
 
         margin_notes = self._group_margin_lines(margin_spans)
         footnotes = self._build_footnotes(footnote_lines)
@@ -139,7 +160,7 @@ class PDFExtractor:
 
         margin_notes.sort(key=lambda n: n.y0)
         body = self._assemble_body(rows, margin_notes)
-        return PageContent(pdf_page, printed_page, body, margin_notes, footnotes)
+        return PageContent(pdf_page, printed_page, body, margin_notes, footnotes, markers)
     
     @staticmethod
     def _group_margin_lines(lines) -> list[MarginNote]:
@@ -205,14 +226,25 @@ class PDFExtractor:
 
     def _find_separator_y(self, blocks):
         c = self.cfg
+        # 1) a long dashed line, any font size
         for b in blocks:
             for ln in b["lines"]:
                 text = "".join(s["text"] for s in ln["spans"]).strip()
-                size = max((s["size"] for s in ln["spans"]), default=99)
-                if (len(text) >= c.separator_min_len and set(text) <= _SEPARATOR_CHARS
-                        and size <= c.footnote_font_max):
+                if len(text) >= c.separator_min_len and set(text) <= _SEPARATOR_CHARS:
                     return ln["bbox"][1]
-        return None
+        # 2) fallback: first footnote-looking line in the lower half of the page
+        ys = []
+        for b in blocks:
+            for ln in b["lines"]:
+                sizes = [s["size"] for s in ln["spans"] if s["text"].strip()]
+                if not sizes or ln["bbox"][1] < 400:
+                    continue
+                first = next(s for s in ln["spans"] if s["text"].strip())
+                if (first["size"] <= c.marker_font_max
+                        and re.fullmatch(r"\s*\d{1,2}\s*", first["text"])
+                        and max(sizes) <= c.footnote_font_max):
+                    ys.append(ln["bbox"][1])
+        return min(ys) if ys else None
 
     def _build_footnotes(self, lines):
         c = self.cfg
@@ -220,7 +252,7 @@ class PDFExtractor:
         for spans in lines:
             buf = ""
             for size, txt in spans:
-                if size <= c.marker_font_max and txt.strip():
+                if size <= c.marker_font_max and size < max(s for s, _ in spans) - 1.5 and txt.strip():
                     if buf.strip() and notes:
                         notes[-1][1] += " " + buf.strip()
                     buf = ""
@@ -239,6 +271,8 @@ class CleanedDocument:
     text: str
     page_starts: list         # (char_offset, pdf_page, printed_page)
     footnotes_by_page: dict   # pdf_page -> ["1. Subs. by ...", ...]
+    markers_by_page: dict = field(default_factory=dict)         # pdf_page -> [Marker]
+    footnote_text_by_page: dict = field(default_factory=dict)   # pdf_page -> {number: text}
 
     def page_at(self, offset: int):
         i = bisect_right([s[0] for s in self.page_starts], offset) - 1
@@ -277,6 +311,7 @@ class TextCleaner:
 
         # pass 2: fix hyphens per page, then assemble so offsets stay correct
         text, starts, footnotes = "", [], {}
+        markers, fn_text = {}, {}
         for p, body, notes in cleaned:
             body = fix_hyphens(body, vocab, self.hyphen_log)
             if text:
@@ -285,7 +320,26 @@ class TextCleaner:
             text += body
             if notes:
                 footnotes[p.pdf_page] = [fix_hyphens(n, vocab, self.hyphen_log) for n in notes]
-        return CleanedDocument(text, starts, footnotes)    
+            if p.markers:
+                markers[p.pdf_page] = p.markers
+            fn_text[p.pdf_page] = {n: fix_hyphens(t, vocab)
+                                   for n, t in self._resolve_ibid(p.footnotes).items()
+                                   if not self.XREF_FOOTNOTE.match(t)}
+        return CleanedDocument(text, starts, footnotes, markers, fn_text)   
+    
+    def _resolve_ibid(self, notes):
+        """notes: ordered [(number, text)] for one page. Returns {number: text} with 'ibid.' made explicit."""
+        out = {}
+        for i, (n, t) in enumerate(notes):
+            if re.search(r"\bibid\b", t, re.I):
+                for j in range(i - 1, -1, -1):
+                    pn, pt = notes[j]
+                    if re.search(r"\bibid\b", pt, re.I) or self.XREF_FOOTNOTE.match(pt):
+                        continue
+                    t = f"{t} [ibid. refers to note {pn}: {pt}]"
+                    break
+            out[n] = t
+        return out
 
     # ---------------------------------------------------------------- per page
     def _clean_page(self, body: str) -> str:
@@ -420,19 +474,68 @@ class ArticleChunker:
     ANNEX_SPLIT = re.compile(r"(?m)^_{3,}\s*ANNEX")
     SCHEDULE = re.compile(r"^(FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH) SCHEDULE\b")
     TERMINAL = ".;:,–—?!”)"
+    _NORM = re.compile(r"[^a-z0-9]+")
 
-    def __init__(self, max_chars: int = 1500):
+    def __init__(self, max_chars: int = 1500, anchor: bool = True):
         self.max_chars = max_chars   # keeps header+body under bge-small's 512-token window
+        self.anchor = anchor         # False = old behaviour: whole-page footnotes on every chunk
+        self.resolved = set()
+        self.anchor_stats = {}
 
-    # ------------------------------------------------------------------ public
+    @classmethod
+    def _norm(cls, s: str) -> str:
+        return cls._NORM.sub("", s.lower())
+
     def chunk(self, doc) -> list[Chunk]:
+        self.resolved = set()
         text = doc.text
         m = self.ANNEX_SPLIT.search(text)
         main, tail, tail_base = (text[:m.start()], text[m.start():], m.start()) if m else (text, "", 0)
         chunks = self._chunk_main(doc, main)
         if tail:
             chunks += self._chunk_tail(doc, tail, tail_base)
+        total = sum(len(v) for v in doc.markers_by_page.values())
+        self.anchor_stats = {"markers": total, "resolved": len(self.resolved)}
         return chunks
+
+    def _anchor(self, doc, body, p0, p1, extra, is_first):
+        """Footnotes whose marker row appears in THIS chunk's text."""
+        nb = self._norm(body)
+        num = extra.get("article_number")
+        found, art_notes = [], []
+        for pg in range(p0, p1 + 2):          # +1: a paragraph can run onto the next page
+            texts = doc.footnote_text_by_page.get(pg, {})
+            for idx, m in enumerate(doc.markers_by_page.get(pg, [])):
+                text = texts.get(m.number)
+                if not text:
+                    continue
+                snip = self._norm(m.before)[-20:] + self._norm(m.after)[:30]
+                art_start = bool(num) and not m.before.strip() and bool(
+                    re.match(rf"^\s*\[?\s*{re.escape(num)}\s*\.", m.after))
+                weak = len(snip) < 14 and not art_start
+                pos = -1
+                if weak:                       # '*' rows, lone punctuation: use the row above
+                    prev = self._norm(m.prev)
+                    if len(prev) >= 24 and not re.search(r"\bArticle\b", text):
+                        pos = nb.find(prev[-40:])
+                elif len(snip) >= 14:
+                    pos = nb.find(snip)
+                else:                          # short row that starts this article
+                    pos = nb.find(self._norm(num + "."))
+                if pos < 0:
+                    continue
+                self.resolved.add((pg, idx))
+                found.append((pos, pg, m.number, text))
+                if is_first and pg == p0 and art_start:
+                    art_notes.append(text)
+        found.sort()
+        seen, notes = set(), []
+        for _, pg, n, t in found:
+            if (pg, n) not in seen:
+                seen.add((pg, n))
+                notes.append(f"{n}. {t}")
+        return notes, list(dict.fromkeys(art_notes))
+
 
     # ----------------------------------------------- preamble + articles 1..280
     def _chunk_main(self, doc, text):
@@ -564,17 +667,23 @@ class ArticleChunker:
         for k, (first_off, last_off, body) in enumerate(packed):
             p0, printed = doc.page_at(first_off)
             p1, _ = doc.page_at(last_off)
-            notes, seen = [], set()
-            for pg in range(p0, p1 + 1):
-                for n in doc.footnotes_by_page.get(pg, []):
-                    if n not in seen:
-                        seen.add(n); notes.append(n)
+            art_notes = []
+            if self.anchor:
+                notes, art_notes = self._anchor(doc, body, p0, p1, extra, k == 0)
+            else:                                   # old behaviour, kept for A/B comparison
+                notes, seen = [], set()
+                for pg in range(p0, p1 + 1):
+                    for n in doc.footnotes_by_page.get(pg, []):
+                        if n not in seen:
+                            seen.add(n); notes.append(n)
             meta = {"doc": self.DOC, "kind": kind, "chunk_index": k, "chunk_count": len(packed),
                     "pdf_page": p0, **extra}
             if printed:
                 meta["printed_page"] = printed
             if notes:
                 meta["amendment_notes"] = " | ".join(notes)[:2000]
+            if art_notes:
+                meta["article_notes"] = " | ".join(art_notes)[:600]
             header = ctx if len(packed) == 1 else f"{ctx} (part {k + 1}/{len(packed)})"
             cid = id_base or kind
             out.append(Chunk(id=cid if len(packed) == 1 else f"{cid}-p{k + 1}",
