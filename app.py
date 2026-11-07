@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import os, time, threading
 import streamlit as st
 
 st.set_page_config(page_title="Law_bot: Constitution of Pakistan", page_icon="⚖️")
@@ -12,7 +12,24 @@ EXAMPLES = [
     "Kya mujhe bina wajah batay giraftar kiya ja sakta hai?",
     "Who appoints the Chief Justice?",
 ]
+DAILY_LIMIT = int(os.getenv("DAILY_QUESTION_LIMIT", "150"))
 
+
+@st.cache_resource
+def usage_counter():
+    return {"day": time.strftime("%Y-%m-%d"), "n": 0, "lock": threading.Lock()}
+
+
+def global_allow():
+    c = usage_counter()
+    with c["lock"]:
+        today = time.strftime("%Y-%m-%d")
+        if c["day"] != today:
+            c["day"], c["n"] = today, 0
+        if c["n"] >= DAILY_LIMIT:
+            return False
+        c["n"] += 1
+        return True
 
 @st.cache_resource(show_spinner="Loading the Constitution index...")
 def load_rag():
@@ -64,6 +81,8 @@ question = st.chat_input("Ask about the Constitution of Pakistan") or st.session
 if question:
     if st.session_state.count >= MAX_QUESTIONS_PER_SESSION:
         st.warning("Session limit reached. Reload the page to continue.")
+    elif not global_allow():
+        st.warning("The demo has reached its daily limit. Please try again tomorrow.")
     else:
         with st.chat_message("user"):
             st.write(question)
