@@ -1,0 +1,51 @@
+{
+  "system": "base",
+  "model": "gpt-54-mini",
+  "temperature": 0.0,
+  "git": "eaa62bc",
+  "time": "2026-11-03 15:18:03",
+  "splits": "all",
+  "n_questions": 45,
+  "retrieval": {
+    "n": 39,
+    "hit@1": {
+      "value": 0.744,
+      "ci95": [
+        0.59,
+        0.85
+      ]
+    },
+    "hit@3": {
+      "value": 0.897,
+      "ci95": [
+        0.76,
+        0.96
+      ]
+    },
+    "hit@5": {
+      "value": 0.923,
+      "ci95": [
+        0.8,
+        0.97
+      ]
+    },
+    "mean_recall": 0.923,
+    "by_category_hit@5": {
+      "amendment_history": "9/9",
+      "named_article": "2/2",
+      "non_article": "1/1",
+      "omitted": "1/1",
+      "paraphrase": "14/16",
+      "procedure": "2/2",
+      "roman_urdu": "1/2",
+      "schedule": "1/1",
+      "situation": "4/4",
+      "wrong_premise": "1/1"
+    },
+    "misses": [
+      "q02",
+      "q11",
+      "q30"
+    ]
+  }
+}

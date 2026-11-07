@@ -1,0 +1,595 @@
+[
+  {
+    "id": "q01",
+    "question": "Can the police arrest me without telling me why?",
+    "expected_articles": [
+      "10"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev",
+    "expected_facts": [
+      "An arrested person must be informed of the grounds for arrest as soon as may be",
+      "An arrested person must be produced before a magistrate within 24 hours"
+    ]
+  },
+  {
+    "id": "q02",
+    "question": "Can the government take my land or property?",
+    "expected_articles": [
+      "24"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev",
+    "expected_facts": [
+      "No person can be deprived of property except in accordance with law",
+      "Compulsory acquisition requires a public purpose, authority of law and compensation"
+    ]
+  },
+  {
+    "id": "q03",
+    "question": "Do children have a right to free education?",
+    "expected_articles": [
+      "25A"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev",
+    "expected_facts": [
+      "The State must provide free and compulsory education to children aged five to sixteen"
+    ]
+  },
+  {
+    "id": "q04",
+    "question": "Is discrimination based on gender allowed?",
+    "expected_articles": [
+      "25"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev",
+    "expected_facts": [
+      "There is no discrimination on the basis of sex",
+      "The State may make special provisions for women and children"
+    ]
+  },
+  {
+    "id": "q05",
+    "question": "Can I be punished for something that wasn't a crime when I did it?",
+    "expected_articles": [
+      "12"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev",
+    "expected_facts": [
+      "No law may punish an act or omission that was not punishable by law when it was done"
+    ]
+  },
+  {
+    "id": "q06",
+    "question": "Is slavery or forced labour allowed?",
+    "expected_articles": [
+      "11"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q07",
+    "question": "How can the Constitution be changed?",
+    "expected_articles": [
+      "239"
+    ],
+    "category": "procedure",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q08",
+    "question": "What happens if the President dies or resigns?",
+    "expected_articles": [
+      "49"
+    ],
+    "category": "situation",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q09",
+    "question": "Who is the commander of the armed forces?",
+    "expected_articles": [
+      "243"
+    ],
+    "category": "situation",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q10",
+    "question": "Article 19 gives freedom of religion, right?",
+    "expected_articles": [
+      "20"
+    ],
+    "category": "wrong_premise",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev",
+    "expected_facts": [
+      "Article 19 is about freedom of speech and expression, not religion (religion is Article 20)"
+    ]
+  },
+  {
+    "id": "q11",
+    "question": "Kya mujhe bina wajah batay giraftar kiya ja sakta hai?",
+    "expected_articles": [
+      "10"
+    ],
+    "category": "roman_urdu",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q12",
+    "question": "What is the minimum age to become President?",
+    "expected_articles": [
+      "41"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q13",
+    "question": "Who appoints the Chief Justice?",
+    "expected_articles": [
+      "177",
+      "175A"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q14",
+    "question": "What is the Objectives Resolution?",
+    "expected_articles": [
+      "2A"
+    ],
+    "category": "non_article",
+    "should_decline": false,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q15",
+    "question": "What does the Constitution say about cryptocurrency?",
+    "expected_articles": [],
+    "category": "out_of_scope",
+    "should_decline": true,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q16",
+    "question": "Who is the current Prime Minister of Pakistan?",
+    "expected_articles": [],
+    "category": "out_of_scope",
+    "should_decline": true,
+    "verified": false,
+    "split": "dev"
+  },
+  {
+    "id": "q17",
+    "question": "What does Article 63 say?",
+    "expected_articles": [
+      "63"
+    ],
+    "category": "named_article",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q18",
+    "question": "What is Article 6 about?",
+    "expected_articles": [
+      "6"
+    ],
+    "category": "named_article",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q19",
+    "question": "What did Article 96 say?",
+    "expected_articles": [
+      "96"
+    ],
+    "category": "omitted",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "Article 96 has been omitted"
+    ]
+  },
+  {
+    "id": "q20",
+    "question": "Can Parliament remove the President from office?",
+    "expected_articles": [
+      "47"
+    ],
+    "category": "situation",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q21",
+    "question": "Who is eligible to be a member of the National Assembly?",
+    "expected_articles": [
+      "62"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q22",
+    "question": "What is the official language of Pakistan?",
+    "expected_articles": [
+      "251"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q23",
+    "question": "Is Islam the state religion?",
+    "expected_articles": [
+      "2"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "Islam is the State religion of Pakistan"
+    ]
+  },
+  {
+    "id": "q24",
+    "question": "Do I have the right to a fair trial?",
+    "expected_articles": [
+      "10A"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "A person is entitled to a fair trial and due process"
+    ]
+  },
+  {
+    "id": "q25",
+    "question": "Can a person be forced to testify against himself?",
+    "expected_articles": [
+      "13"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "No person accused of an offence can be compelled to be a witness against himself"
+    ]
+  },
+  {
+    "id": "q26",
+    "question": "How are members of the Senate elected?",
+    "expected_articles": [
+      "59"
+    ],
+    "category": "procedure",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q27",
+    "question": "What does the Constitution say about minorities?",
+    "expected_articles": [
+      "36"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q28",
+    "question": "What happens when an emergency is declared?",
+    "expected_articles": [
+      "232"
+    ],
+    "category": "situation",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q29",
+    "question": "What oath does the Prime Minister take?",
+    "expected_articles": [
+      "Third Schedule"
+    ],
+    "category": "schedule",
+    "should_decline": false,
+    "verified": false,
+    "split": "heldout"
+  },
+  {
+    "id": "q30",
+    "question": "Who conducts elections in Pakistan?",
+    "expected_articles": [
+      "218"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q31",
+    "question": "Kya Pakistan ka sarkari mazhab Islam hai?",
+    "expected_articles": [
+      "2"
+    ],
+    "category": "roman_urdu",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout"
+  },
+  {
+    "id": "q32",
+    "question": "At what age must a Supreme Court judge retire?",
+    "expected_articles": [
+      "179"
+    ],
+    "category": "paraphrase",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "A Supreme Court judge holds office until the age of sixty-five"
+    ]
+  },
+  {
+    "id": "q33",
+    "question": "What are the current income tax rates in Pakistan?",
+    "expected_articles": [],
+    "category": "out_of_scope",
+    "should_decline": true,
+    "verified": false,
+    "split": "heldout"
+  },
+  {
+    "id": "q34",
+    "question": "Can you advise me on my divorce case?",
+    "expected_articles": [],
+    "category": "out_of_scope",
+    "should_decline": true,
+    "verified": false,
+    "split": "heldout"
+  },
+  {
+    "id": "q35",
+    "question": "When was Article 175A inserted?",
+    "expected_articles": [
+      "175A"
+    ],
+    "category": "amendment_history",
+    "should_decline": false,
+    "verified": true,
+    "split": "dev",
+    "expected_facts": [
+      "Article 175A was originally inserted in 2010 (by Act No. 10 of 2010, i.e. the Eighteenth Amendment)",
+      "It was later amended by the Twenty-sixth Amendment (2024) and/or the Twenty-seventh Amendment (2025)"
+    ]
+  },
+  {
+    "id": "q36",
+    "question": "When was Article 10A inserted into the Constitution?",
+    "expected_articles": [
+      "10A"
+    ],
+    "category": "amendment_history",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "Article 10A was inserted by the Eighteenth Amendment in 2010"
+    ]
+  },
+  {
+    "id": "q37",
+    "question": "Which amendment added Article 19A on the right to information?",
+    "expected_articles": [
+      "19A"
+    ],
+    "category": "amendment_history",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "Article 19A was inserted by the Eighteenth Amendment in 2010"
+    ]
+  },
+  {
+    "id": "q38",
+    "question": "How did Article 25A come to be part of the Constitution?",
+    "expected_articles": [
+      "25A"
+    ],
+    "category": "amendment_history",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout",
+    "expected_facts": [
+      "Article 25A was inserted by the Eighteenth Amendment in 2010"
+    ]
+  },
+  {
+    "id": "q39",
+    "question": "How did Article 2A come to be part of the Constitution?",
+    "category": "amendment_history",
+    "verified": true,
+    "split": "heldout2",
+    "expected_articles": [
+      "2A"
+    ],
+    "should_decline": false,
+    "expected_facts": [
+      "Article 2A was inserted by the Revival of the Constitution of 1973 Order, 1985 (P.O. No. 14 of 1985)"
+    ]
+  },
+  {
+    "id": "q40",
+    "question": "When was Article 140A on local government added to the Constitution?",
+    "category": "amendment_history",
+    "verified": true,
+    "split": "heldout2",
+    "expected_articles": [
+      "140A"
+    ],
+    "should_decline": false,
+    "expected_facts": [
+      "The current Article 140A was inserted by the Eighteenth Amendment in 2010"
+    ]
+  },
+  {
+    "id": "q41",
+    "question": "When was Article 11 inserted into the Constitution?",
+    "category": "amendment_history",
+    "verified": true,
+    "split": "heldout2",
+    "expected_articles": [],
+    "should_decline": true
+  },
+  {
+    "id": "q42",
+    "question": "Which amendment inserted Article 24?",
+    "category": "amendment_history",
+    "verified": true,
+    "split": "heldout2",
+    "expected_articles": [],
+    "should_decline": true
+  },
+  {
+    "id": "q43",
+    "question": "When did Article 140A become part of the Constitution?",
+    "category": "amendment_history",
+    "verified": true,
+    "split": "heldout2",
+    "expected_articles": [
+      "140A"
+    ],
+    "should_decline": false,
+    "expected_facts": [
+      "The current Article 140A was inserted by the Eighteenth Amendment in 2010"
+    ]
+  },
+  {
+    "id": "q44",
+    "question": "When was Article 203GG inserted?",
+    "expected_articles": [
+      "203GG"
+    ],
+    "category": "amendment_history",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout3",
+    "expected_facts": [
+      "Article 203GG was inserted by the Constitution (Second Amendment) Order, 1982 (P.O. No. 5 of 1982)"
+    ]
+  },
+  {
+    "id": "q45",
+    "question": "Which law inserted Article 224A?",
+    "expected_articles": [
+      "224A"
+    ],
+    "category": "amendment_history",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout3",
+    "expected_facts": [
+      "Article 224A was inserted by Act No. 5 of 2012"
+    ]
+  },
+  {
+    "id": "q47",
+    "question": "How long can a President serve?",
+    "expected_articles": [
+      "44"
+    ],
+    "category": "completeness",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout4",
+    "expected_facts": [
+      "The President's term is five years",
+      "No person may hold the office of President for more than two consecutive terms"
+    ]
+  },
+  {
+    "id": "q48",
+    "question": "At what age does a Federal Constitutional Court judge retire?",
+    "expected_articles": [
+      "175I"
+    ],
+    "category": "completeness",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout4",
+    "expected_facts": [
+      "A Federal Constitutional Court judge holds office until the age of sixty-eight",
+      "The Chief Justice of the Federal Constitutional Court serves a term of three years"
+    ]
+  },
+  {
+    "id": "q49",
+    "question": "Can a Province hand over functions to the Federal Government?",
+    "expected_articles": [
+      "147"
+    ],
+    "category": "completeness",
+    "should_decline": false,
+    "verified": true,
+    "split": "heldout4",
+    "expected_facts": [
+      "Yes, with the consent of the Federal Government",
+      "The Provincial Government must get the functions ratified by the Provincial Assembly within sixty days"
+    ]
+  }
+]

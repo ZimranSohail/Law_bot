@@ -1,0 +1,108 @@
+{
+  "system": "fusion",
+  "model": "gpt-54-mini",
+  "temperature": 0.0,
+  "git": "eaa62bc",
+  "time": "2026-11-06 00:16:01",
+  "splits": "all",
+  "n_questions": 48,
+  "db_path": "./chroma_db_v2",
+  "retrieval": {
+    "n": 42,
+    "hit@1": {
+      "value": 0.81,
+      "ci95": [
+        0.67,
+        0.9
+      ]
+    },
+    "hit@3": {
+      "value": 0.952,
+      "ci95": [
+        0.84,
+        0.99
+      ]
+    },
+    "hit@5": {
+      "value": 0.976,
+      "ci95": [
+        0.88,
+        1.0
+      ]
+    },
+    "mean_recall": 0.976,
+    "by_category_hit@5": {
+      "amendment_history": "9/9",
+      "completeness": "3/3",
+      "named_article": "2/2",
+      "non_article": "1/1",
+      "omitted": "1/1",
+      "paraphrase": "15/16",
+      "procedure": "2/2",
+      "roman_urdu": "2/2",
+      "schedule": "1/1",
+      "situation": "4/4",
+      "wrong_premise": "1/1"
+    },
+    "misses": [
+      "q30"
+    ]
+  },
+  "answers": {
+    "n_questions": 29,
+    "runs": 3,
+    "mean_pass_rate": 0.851,
+    "questions_passing_majority": "25/29",
+    "ci95_majority": [
+      0.69,
+      0.95
+    ],
+    "by_category": {
+      "amendment_history": 0.64,
+      "completeness": 1.0,
+      "omitted": 1.0,
+      "out_of_scope": 1.0,
+      "paraphrase": 0.96,
+      "wrong_premise": 1.0
+    },
+    "per_question": {
+      "q01": "2/3",
+      "q02": "3/3",
+      "q03": "3/3",
+      "q04": "3/3",
+      "q05": "3/3",
+      "q10": "3/3",
+      "q15": "3/3",
+      "q16": "3/3",
+      "q19": "3/3",
+      "q23": "3/3",
+      "q24": "3/3",
+      "q25": "3/3",
+      "q32": "3/3",
+      "q33": "3/3",
+      "q34": "3/3",
+      "q35": "0/3",
+      "q36": "3/3",
+      "q37": "3/3",
+      "q38": "0/3",
+      "q39": "0/3",
+      "q40": "3/3",
+      "q41": "3/3",
+      "q42": "3/3",
+      "q43": "0/3",
+      "q44": "3/3",
+      "q45": "3/3",
+      "q47": "3/3",
+      "q48": "3/3",
+      "q49": "3/3"
+    },
+    "failing_examples": {
+      "q01": "No. A person who is arrested must be informed, as soon as may be, of the grounds for the arrest, and must also be allowed to consult and be defended by a legal practitioner of their choice. (Article 10(1))\n\nThere is an exception for arrest or detention under a law providing for preventive detention. (Article 10(3))",
+      "q35": "Article 175A was inserted by the Constitution (Eighteenth Amendment) Act, 2010, with the note stating: “New Article 175A ins. by the Act No. 10 of 2010, s. 67.” (Article 175A)",
+      "q38": "Article 25A is part of the Constitution because it was inserted as a fundamental right providing that the State shall provide free and compulsory education to all children aged five to sixteen years. (Article 25A)\n\nThe sources you provided do not say when or by which amendment Article 25A was inserted, only that it currently exists in the Constitution. (Article 25A)",
+      "q39": "Article 2A became part of the Constitution because the Objectives Resolution, reproduced in the Annex, was made a substantive part of the Constitution by Article 2A itself. It says that the principles and provisions set out in the Objectives Resolution “are hereby made substantive part of the Constitution and shall have effect accordingly.” (Article 2A)",
+      "q43": "Article 140A is part of the Constitution as shown in the current text, but the sources provided do not state when it was first inserted or became part of the Constitution. (Article 140A; Article 265)"
+    },
+    "errored_runs": 0
+  }
+}
