@@ -6,7 +6,7 @@ A retrieval-augmented question-answering bot over the Constitution of Pakistan (
 
 ## Live demo
 
-**Try it:** https://YOUR-APP-NAME.streamlit.app
+**Try it:** https://know-your-rights-pk.streamlit.app/
 
 ![Law_bot demo](docs/demo.png)
 
