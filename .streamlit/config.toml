@@ -4,3 +4,27 @@ runOnSave = false
 
 [browser]
 gatherUsageStats = false
+
+[theme]
+font = "'Source Serif 4':https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap"
+baseRadius = "6px"
+
+[theme.light]
+primaryColor = "#01411C"
+backgroundColor = "#FAF8F2"
+secondaryBackgroundColor = "#F0ECDF"
+textColor = "#1C2B23"
+linkColor = "#01411C"
+borderColor = "#D9D3BF"
+greenColor = "#1E6B3E"
+greenBackgroundColor = "#DDEBDD"
+
+[theme.dark]
+primaryColor = "#2F855A"
+backgroundColor = "#0D1B14"
+secondaryBackgroundColor = "#15291F"
+textColor = "#E7EEE8"
+linkColor = "#7BD3A0"
+borderColor = "#2A4436"
+greenColor = "#7BD3A0"
+greenBackgroundColor = "#1B3A2A"
