@@ -202,7 +202,7 @@ with st.sidebar:
     if st.button("Clear conversation", use_container_width=True):
         st.session_state.history = []
         st.rerun()
-    st.markdown(f"[Source code on GitHub]({REPO_URL})")
+    st.markdown(f"[Source code on GitHub]({https://github.com/ZimranSohail/Law_bot})")
 
 landing = st.empty()
 if not st.session_state.history:
